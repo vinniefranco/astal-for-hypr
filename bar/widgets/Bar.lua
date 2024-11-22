@@ -119,8 +119,9 @@ local function Time(format)
   })
 end
 
-local function Workspaces()
+local function Workspaces(_gdkmonitor)
   local hypr = Hyprland.get_default()
+  local workspace_icons = { "", "󰧑", "", "", "󰊕", "󰯜", "", "", "", }
 
   return Widget.Box({
     class_name = "Workspaces",
@@ -129,19 +130,25 @@ local function Workspaces()
         return a.id < b.id
       end)
 
-      return map(wss, function(ws)
-        return Widget.Button({
-          class_name = bind(hypr, "focused-workspace"):as(function(fw)
-            return fw == ws and "focused" or ""
-          end),
-          on_clicked = function()
-            ws:focus()
-          end,
-          label = bind(ws, "id"):as(function(v)
-            return type(v) == "number" and string.format("%.0f", v) or v
-          end),
-        })
-      end)
+      return map(
+        wss,
+        function(ws)
+          return Widget.Button({
+            class_name = bind(hypr, "focused-workspace"):as(function(fw)
+              return fw == ws and "focused" or ""
+            end),
+            on_clicked = function()
+              ws:focus()
+            end,
+            label = bind(ws, "id"):as(function(v)
+              if type(v) == "number" then
+                return workspace_icons[v]
+              else
+                return v
+              end
+            end),
+          })
+        end)
     end),
   })
 end
@@ -170,7 +177,7 @@ return function(gdkmonitor)
     Widget.CenterBox({
       Widget.Box({
         halign = "START",
-        Workspaces(),
+        Workspaces(gdkmonitor),
         Time("%l:%M %p  %A %e"),
       }),
       Widget.Box({

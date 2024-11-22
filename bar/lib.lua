@@ -20,6 +20,17 @@ function M.map(arr, func)
   return new_arr
 end
 
+function M.filter(arr, test, func)
+  local new_arr = {}
+  for i, v in ipairs(arr) do
+    if test(v, i) then
+      new_arr[i] = func(v, i)
+    end
+  end
+
+  return new_arr
+end
+
 M.date = Variable(""):poll(1000, "date")
 
 return M
