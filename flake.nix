@@ -20,7 +20,7 @@
     {
       packages.${system}.default = astal.lib.mkLuaPackage {
         inherit pkgs;
-        name = "ags-bar";
+        name = "astal-bar";
         src = ./bar;
 
         extraPackages = [
