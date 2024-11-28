@@ -1,0 +1,35 @@
+$bg: #212223;
+$fg: #f1f1f1;
+$accent: #00e8c6;
+$radius: 7px;
+
+window.AppLauncher {
+  border: none;
+  box-shadow: none;
+  color: $fg;
+  font-size: 1em;
+  font-family: "Fira Code Nerd Font Mono";
+  width: 400px;
+
+  button {
+    all: unset;
+    background-color: transparent;
+
+    &:hover label {
+      background-color: transparentize($fg, 0.84);
+      border-color: transparentize($accent, 0.8);
+    }
+
+    &:active label {
+      background-color: transparentize($fg, 0.8)
+    }
+  }
+
+  label {
+    transition: 200ms;
+    padding: 6px 8px;
+    margin: 2px;
+    border-top: 1pt solid transparent;
+  }
+
+}
