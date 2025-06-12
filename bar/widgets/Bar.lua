@@ -77,27 +77,15 @@ local function SysTray()
     class_name = "Tray",
     bind(tray, "items"):as(function(items)
       return map(items, function(item)
-        if item.icon_theme_path ~= nil then
-          App:add_icons(item.icon_theme_path)
-        end
-
-        local menu = item:create_menu()
-
-        return Widget.Button({
-          class_name = "TrayIcon",
+        return Widget.MenuButton({
           tooltip_markup = bind(item, "tooltip_markup"),
-          on_destroy = function()
-            if menu ~= nil then
-              menu:destroy()
-            end
-          end,
-          on_click_release = function(self)
-            if menu ~= nil then
-              menu:popup_at_widget(self, Gdk.Gravity.SOUTH, Gdk.Gravity.NORTH, nil)
-            end
-          end,
+          use_popover = false,
+          menu_model = bind(item, "menu-model"),
+          action_group = bind(item, "action-group"):as(
+            function(ag) return { "dbusmenu", ag } end
+          ),
           Widget.Icon({
-            g_icon = bind(item, "gicon"),
+            gicon = bind(item, "gicon"),
           }),
         })
       end)
